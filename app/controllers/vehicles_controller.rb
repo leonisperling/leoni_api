@@ -1,6 +1,7 @@
 class VehiclesController < ApplicationController
   def create
-    @vehicle = Vehicle.new(uuid: params[:id])
+    @vehicle = Vehicle.find_or_initialize_by(uuid: params[:id])
+    @vehicle.active = true
     if @vehicle.save
       render json: nil, status: 204
     else
@@ -10,7 +11,7 @@ class VehiclesController < ApplicationController
 
   def destroy
     @vehicle = Vehicle.find_by(uuid: params[:id])
-    @vehicle.destroy
+    @vehicle.update(active: false)
     render nil, status: 204
   end
 end

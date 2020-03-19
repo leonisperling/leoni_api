@@ -1,8 +1,13 @@
 class LocationsController < ApplicationController
+  OFFICE_COORDINATES = [52.53, 13.403]
+  RADIUS = 3.5
+
+  before_action :set_vehicle
+
   def create
     return unless within_radius?
+    return unless @vehicle.active
 
-    @vehicle = Vehicle.find_by(uuid: params[:vehicle_id])
     @location = Location.new(
       lat: params[:lat],
       lng: params[:lng],
@@ -19,14 +24,18 @@ class LocationsController < ApplicationController
   private
 
   def within_radius?
-    office_coordinates = [52.53, 13.403]
-    radius = 3.5
-    distance = Geocoder::Calculations.distance_between(office_coordinates, coordinates)
+    distance = Geocoder::Calculations.distance_between(
+      OFFICE_COORDINATES, coordinates
+    )
 
-    distance < radius
+    distance < RADIUS
   end
 
   def coordinates
     [params[:lat], params[:lng]]
+  end
+
+  def set_vehicle
+    @vehicle = Vehicle.find_by(uuid: params[:vehicle_id])
   end
 end
