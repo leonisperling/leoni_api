@@ -20,6 +20,7 @@ class LocationsController < ApplicationController
   def within_radius?
     office_coordinates = [52.53, 13.403]
     radius = 3_500
+
   end
 
   def coordinates
