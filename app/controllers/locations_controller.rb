@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   def create
-    @vehicle = Vehicle.find(params[:vehicle_id])
+    @vehicle = Vehicle.find_by(uuid: params[:vehicle_id])
     @location = Location.new(location_params)
     @location.vehicle = @vehicle
     if @location.save

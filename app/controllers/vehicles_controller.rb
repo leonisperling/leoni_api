@@ -9,7 +9,7 @@ class VehiclesController < ApplicationController
   end
 
   def destroy
-    @vehicle = Vehicle.find(params[:id])
+    @vehicle = Vehicle.find_by(uuid: params[:id])
     @vehicle.destroy
   end
 end
