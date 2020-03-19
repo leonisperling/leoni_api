@@ -19,7 +19,7 @@ class LocationsController < ApplicationController
   private
 
   def within_radius?
-    office_coordinates = [[52.53, 13.403], [51.50, 12.4]]
+    office_coordinates = [52.53, 13.403]
     radius = 3.5
     distance = Geocoder::Calculations.distance_between(office_coordinates, coordinates)
 
