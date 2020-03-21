@@ -15,6 +15,7 @@ class LocationsController < ApplicationController
     )
     @location.vehicle = @vehicle
     if @location.save
+      broadcast_location
       render json: nil, status: 204
     else
       render json: @location.errors, status: 403
@@ -37,5 +38,16 @@ class LocationsController < ApplicationController
 
   def set_vehicle
     @vehicle = Vehicle.find_by(uuid: params[:vehicle_id])
+  end
+
+  # You can simulate a connection to listen for changes using the following body:
+  # {"command":"subscribe","identifier":"{\"channel\":\"LocationsChannel\"}"}
+  def broadcast_location
+    ActionCable.server.broadcast(
+      'locations',
+      latitude: @location.lat,
+      longitude: @location.lng,
+      at: @location.at
+    )
   end
 end
